@@ -1,0 +1,154 @@
+﻿@model IEnumerable<ShadiMubarak.Models.Booking>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+@section scripts
+{
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        var firebaseConfig = {
+            apiKey: "AIzaSyDzmC2UmoDWMOwSWgSIJ-Azr-6Mx1ZugHo",
+            authDomain: "shadimubarak-61495.firebaseapp.com",
+            databaseURL: "https://shadimubarak-61495.firebaseio.com",
+            projectId: "shadimubarak-61495",
+            storageBucket: "shadimubarak-61495.appspot.com",
+            messagingSenderId: "388208080065",
+            appId: "1:388208080065:web:f5a29c883bbe9d0e89d040",
+            measurementId: "G-42QEPH4SL9"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+        });
+
+        function SetCustomerId(customerId) {
+            $('.customerId').val(customerId);
+        }
+
+
+        function AddCustomer() {
+
+            var company_name = $('.name').val();
+            var abbreviation = $('.Abbreviation').val();
+            var preventBind = false;
+            if (company_name == "" || company_name == null) {
+                $(".AddCustomerForm").submit(function (e) {
+                    e.preventDefault();
+                    preventBind = true;
+                });
+                return toastr.error('Company name is required!');
+            }
+            if (abbreviation == "" || abbreviation == null) {
+                $(".AddCustomerForm").submit(function (e) {
+                    e.preventDefault();
+                    preventBind = true;
+                });
+                return toastr.error('Abbreviation is required!');
+            }
+            if (preventBind == false) {
+                $(".AddCustomerForm").unbind('submit').submit();
+            }
+            return toastr.success("Cutomer added successfully.");
+        }
+
+
+    </script>
+}
+<div class="app-main__inner">
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+
+                <div>
+                    Booking
+                    <div class="page-title-subheading">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-title-subheading opacity-10">
+            <nav class="" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a>
+                            <i aria-hidden="true" class="fa fa-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Booking")">Booking List</a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="main-card mb-3 card">
+        <div class="card-body">
+            <div class="">
+                <div class="">
+                    <div class="">
+                        <ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
+                            <li class="nav-item">
+                                <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-0">
+                                    <span>Booking List</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="main-card mb-3 card">
+                                            <div class="card-body">
+                                                <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Customer Name</th>
+                                                            <th>Booking Date</th>
+                                                            <th>Customer Email</th>
+                                                            <th>Vendor Name</th>
+                                                            <th>Event Date</th>
+                                                            <th>Approved</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in Model)
+                                                        {
+                                                            <tr>
+                                                                <td>@item.customerName</td>
+                                                                <td>@item.bookingDate</td>
+                                                                <td>@item.customerEmail</td>
+                                                                <td>@item.vendorName</td>
+                                                                <td>@item.eventDate</td>
+                                                                <td>@item.isApproved</td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

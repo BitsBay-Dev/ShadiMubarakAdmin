@@ -1,0 +1,181 @@
+﻿@model IEnumerable<ShadiMubarak.Models.Customer>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+@section scripts
+{
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        var firebaseConfig = {
+            apiKey: "AIzaSyDzmC2UmoDWMOwSWgSIJ-Azr-6Mx1ZugHo",
+            authDomain: "shadimubarak-61495.firebaseapp.com",
+            databaseURL: "https://shadimubarak-61495.firebaseio.com",
+            projectId: "shadimubarak-61495",
+            storageBucket: "shadimubarak-61495.appspot.com",
+            messagingSenderId: "388208080065",
+            appId: "1:388208080065:web:f5a29c883bbe9d0e89d040",
+            measurementId: "G-42QEPH4SL9"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+        });
+
+        function SetCustomerId(customerId) {
+            $('.customerId').val(customerId);
+        }
+
+
+        function AddCustomer() {
+
+            var company_name = $('.name').val();
+            var abbreviation = $('.Abbreviation').val();
+            var preventBind = false;
+            if (company_name == "" || company_name == null) {
+                $(".AddCustomerForm").submit(function (e) {
+                    e.preventDefault();
+                    preventBind = true;
+                });
+                return toastr.error('Company name is required!');
+            }
+            if (abbreviation == "" || abbreviation == null) {
+                $(".AddCustomerForm").submit(function (e) {
+                    e.preventDefault();
+                    preventBind = true;
+                });
+                return toastr.error('Abbreviation is required!');
+            }
+            if (preventBind == false) {
+                $(".AddCustomerForm").unbind('submit').submit();
+            }
+            return toastr.success("Cutomer added successfully.");
+        }
+
+
+    </script>
+}
+<div class="app-main__inner">
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+
+                <div>
+                    Vendor
+                    <div class="page-title-subheading">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-title-subheading opacity-10">
+            <nav class="" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a>
+                            <i aria-hidden="true" class="fa fa-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Customer")">Customer List</a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="main-card mb-3 card">
+        <div class="card-body">
+            <div class="">
+                <div class="">
+                    <div class="">
+                        <ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
+                            <li class="nav-item">
+                                <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-0">
+                                    <span>Customer List</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="main-card mb-3 card">
+                                            <div class="card-body">
+                                                <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Name</th>
+                                                            <th>Email</th>
+                                                            <th>City</th>
+                                                            <th>Phone</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in Model)
+                                                        {
+                                                            <tr>
+                                                                <td>@item.name</td>
+                                                                <td>@item.email</td>
+                                                                <td>@item.city</td>
+                                                                <td>@item.contact</td>
+                                                                <td>
+                                                                        <button onclick="window.location.href='@Url.Action("Details", "Customer", new { id = item.id })'" class="mb-2 mr-2 btn-icon btn-pill btn btn-outline-primary">Detail</button>
+                                                                    
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Delete Customer pop up*@
+<div class="modal fade" id="DeletCustomerModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Vendor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/Customer/Delete" method="post">
+                    <input style="display:none;" type="hidden" class="customerId" name="id" value="" />
+                    <div style="margin-top:10px; text-align:center;">
+                        <div class="results-title" style="margin-bottom:5px;">Do You want to delete this Record?</div>
+                        <button type="submit" class="btn btn-primary">Confirm Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#DeletCustomerModal').appendTo('body');
+</script>

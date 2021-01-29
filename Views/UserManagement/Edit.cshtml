@@ -1,0 +1,227 @@
+﻿@model ShadiMubarak.Models.ViewModel.AccountViewModel.ManageUserViewModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+<script>
+
+    function isEditSuccessfully() {
+        var first_name = $('.first_name').val();
+        var last_name = $('.last_name').val();
+        var user_name = $('.user_name').val();
+        var old_password = $('.old_password').val();
+        var password = $('.password').val();
+        var confirm_password = $('.confirm_password').val();
+        var phone_number = $('.phone_number').val();
+
+        if ((first_name == "" || first_name == null)
+            || (last_name == "" || last_name == null)
+            || (user_name == "" || user_name == null)) {
+            document.addEventListener('invalid', (function () {
+                return function (e) {
+                    e.preventDefault();
+                };
+            })(), true);
+            if (first_name == "" || first_name == null)
+                return toastr.error("First Name is required!");
+            if (last_name == "" || last_name == null)
+                return toastr.error("Last Name is required!");
+            if (user_name == "" || user_name == null)
+                return toastr.error("UserName is required!");
+        }
+        if (password.length != 0 && password.length >= 6) {
+            if (password !== confirm_password) {
+                $("#editUserForm").submit(function (e) {
+                    e.preventDefault();
+                });
+                return toastr.error("New Password and Confirm Password should be same!");
+            }
+        }
+
+        if (user_name != "" && user_name != null) {
+            if ((!user_name.match(/^([a-zA-Z0-9_\.\-])+\@@(([a-z0-9\-])+\.)+([a-z0-9]{2,4})+$/)) || (phone_number.length != 0 && phone_number.length < 7) ||
+                (password.length != 0 && password.length < 6) || (old_password.length != 0 && old_password.length < 6)
+                || (confirm_password.length != 0 && confirm_password.length < 6)) {
+                document.addEventListener('invalid', (function () {
+                    return function (e) {
+                        e.preventDefault();
+                    };
+                })(), true);
+                if (phone_number.length != 0 && phone_number.length < 7) {
+                    $("#editUserForm").submit(function (e) {
+                        e.preventDefault();
+                    });
+                    return toastr.error("Phone number should be atleast 7 digits long!");
+                }
+                if (!user_name.match(/^([a-zA-Z0-9_\.\-])+\@@(([a-z0-9\-])+\.)+([a-z0-9]{2,4})+$/))
+                    return toastr.error("Please enter correct username");
+                if (old_password.length != 0 && old_password.length < 6)
+                    return toastr.error("Old Password should be atleast 6 characters long!");
+                if (password.length != 0 && password.length < 6)
+                    return toastr.error("Password should be atleast 6 characters long!");
+                if (confirm_password.length != 0 && confirm_password.length < 6)
+                    return toastr.error("Confirm Password should be atleast 6 characters long!");
+            }
+            else {
+                return toastr.success("User updated successfully.");
+            }
+        }
+    }
+
+</script>
+<div class="app-page-title">
+    <div class="page-title-wrapper">
+        <div class="page-title-heading">
+
+            <div>
+                User
+                <div class="page-title-subheading">
+                </div>
+            </div>
+        </div>
+        <div class="page-title-actions">
+            <button type="button" data-toggle="tooltip" title="Example Tooltip" data-placement="bottom" class="btn-shadow mr-3 btn btn-dark">
+                <i class="fa fa-star"></i>
+            </button>
+            <div class="d-inline-block dropdown">
+                <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-shadow dropdown-toggle btn btn-info">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                        <i class="fa fa-business-time fa-w-20"></i>
+                    </span>
+                    Tools
+                </button>
+                <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link">
+                                <i class="nav-link-icon lnr-inbox"></i>
+                                <span>
+                                    Import
+                                </span>
+                                <div class="ml-auto badge badge-pill badge-secondary">86</div>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link">
+                                <i class="nav-link-icon lnr-book"></i>
+                                <span>
+                                    Export
+                                </span>
+                                <div class="ml-auto badge badge-pill badge-danger">5</div>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link">
+                                <i class="nav-link-icon lnr-picture"></i>
+                                <span>
+                                    Print
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-title-subheading opacity-10">
+        <nav class="" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a>
+                        <i aria-hidden="true" class="fa fa-home"></i>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="@Url.Action("Index", "UserManagement")">User List</a>
+                </li>
+                <li class="active breadcrumb-item" aria-current="page">
+                    <a href="@Url.Action("Edit", "UserManagement", new { id = Model.Id })">Edit</a>
+                </li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="tab-content">
+    <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="main-card mb-3 card">
+                    <div class="card-body">
+
+                        <div>
+                            <div class="form-wizard-content">
+                                <form class="" id="editUserForm" action="/UserManagement/Edit" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" value="@Model.Id" name="id" />
+                                    <div id="step-1">
+                                        <div class="card-body">
+                                            @Html.AntiForgeryToken()
+                                            @Html.ValidationSummary(true)
+                                            <div class="position-relative row form-group">
+                                                <label for="exampleAddress" class="col-sm-2 col-form-label">First Name</label>
+                                                <div class="col-sm-10">
+                                                    <input name="firstname" value="@Model.FirstName" placeholder="Enter First Name" required type="text" class="form-control first_name">
+                                                </div>
+                                            </div>
+                                            <div class="position-relative row form-group">
+                                                <label for="exampleAddress" class="col-sm-2 col-form-label">Last Name</label>
+                                                <div class="col-sm-10">
+                                                    <input name="lastname" value="@Model.LastName" placeholder="Enter Last Name" required type="text" class="form-control last_name">
+                                                </div>
+                                            </div>
+                                            <div class="position-relative row form-group">
+                                                <label for="exampleAddress" class="col-sm-2 col-form-label">User Name</label>
+                                                <div class="col-sm-10">
+                                                    <input name="username" value="@Model.UserName" placeholder="Enter UserName" required type="email" class="form-control user_name">
+                                                </div>
+                                            </div>
+                                            <div class="position-relative row form-group">
+                                                <label for="exampleAddress" class="col-sm-2 col-form-label">Image</label>
+                                                <div class="col-sm-10">
+                                                    <input name="ImageFile" type="file">
+                                                </div>
+                                            </div>
+                                            <div class="position-relative row form-group">
+                                                <label for="exampleAddress" class="col-sm-2 col-form-label">Old Password</label>
+                                                <div class="col-sm-10">
+                                                    <input name="oldpassword" minlength="6" placeholder="Enter Password" type="password" class="form-control old_password">
+                                                </div>
+                                            </div>
+                                            <div class="position-relative row form-group">
+                                                <label for="exampleAddress" class="col-sm-2 col-form-label">New Password</label>
+                                                <div class="col-sm-10">
+                                                    <input name="newpassword" minlength="6" placeholder="Enter Password" type="password" class="form-control password">
+                                                </div>
+                                            </div>
+                                            <div class="position-relative row form-group">
+                                                <label for="exampleAddress" class="col-sm-2 col-form-label">Confirm Password</label>
+                                                <div class="col-sm-10">
+                                                    <input name="confirmpassword" minlength="6" placeholder="Enter Password" type="password" class="form-control confirm_password">
+                                                </div>
+                                            </div>
+                                            <div class="position-relative row form-group">
+                                                <label for="exampleAddress" class="col-sm-2 col-form-label">Phone Number</label>
+                                                <div class="col-sm-10">
+                                                    <input name="phonenumber" minlength="7" value="@Model.PhoneNumber" placeholder="Enter Phone Number" type="text" class="form-control phone_number">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="step-2">
+                                        <div class="no-results">
+                                            <div class="text-center">
+                                                <button onclick="isEditSuccessfully()" data-type="success" class="btn-shadow btn-wide btn btn-success btn-lg">Finish</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,103 @@
+﻿@model ShadiMubarak.Models.VendorCategory
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="app-page-title">
+    <div class="page-title-wrapper">
+        <div class="page-title-heading">
+            <div class="page-title-icon">
+                <i class="pe-7s-medal icon-gradient bg-tempting-azure">
+                </i>
+            </div>
+            <div>
+                Vendor Category Information
+                <div class="page-title-subheading">
+                </div>
+            </div>
+        </div>
+        <div class="page-title-actions">
+            <button type="button" data-toggle="tooltip" title="Example Tooltip" data-placement="bottom" class="btn-shadow mr-3 btn btn-dark">
+                <i class="fa fa-star"></i>
+            </button>
+            <div class="d-inline-block dropdown">
+                <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-shadow dropdown-toggle btn btn-info">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                        <i class="fa fa-business-time fa-w-20"></i>
+                    </span>
+                    VendorCategories
+                </button>
+                <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link">
+                                <i class="nav-link-icon lnr-inbox"></i>
+                                <span>
+                                    Import
+                                </span>
+                                <div class="ml-auto badge badge-pill badge-secondary">86</div>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link">
+                                <i class="nav-link-icon lnr-book"></i>
+                                <span>
+                                    Export
+                                </span>
+                                <div class="ml-auto badge badge-pill badge-danger">5</div>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link">
+                                <i class="nav-link-icon lnr-picture"></i>
+                                <span>
+                                    Print
+                                </span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-title-subheading opacity-10">
+        <nav class="" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a>
+                        <i aria-hidden="true" class="fa fa-home"></i>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="@Url.Action("Index", "VendorCategory")">Vendor Category</a>
+                </li>
+                <li class="active breadcrumb-item" aria-current="page">
+                    <a href="@Url.Action("Delete", "VendorCategory", new { name = Model.name })">Delete</a>
+                </li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="main-card mb-3 card">
+    <div class="card-body">
+        <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered">
+            <tbody>
+                <tr>
+                    <th>Name</th>
+                    <td>@Model.name</td>
+                </tr>
+            </tbody>
+        </table>
+        <form action="/VendorCategory/Delete" method="post">
+            <input type="hidden" value="@Model.name" name="name" />
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="box-footer text-center">
+                    <button type="submit" value="Delete" class="btn btn-primary btn-show-swal">Delete</button>
+                    <a href="/VendorCategory/Index" class="btn btn-danger">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

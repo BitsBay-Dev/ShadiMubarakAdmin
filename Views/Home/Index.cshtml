@@ -1,0 +1,308 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+<style>
+    .card-header {
+        display: flex;
+        align-items: center;
+        border-bottom-width: 1px;
+        padding-top: 0;
+        padding-bottom: 0;
+        padding-right: .625rem;
+        height: 2.5rem;
+    }
+
+    .Box-Boarder-Style {
+        border: 1px solid;
+        border-bottom: 3px solid;
+    }
+
+    #music {
+        position: relative;
+    }
+
+    .hyperspan {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+    }
+
+    .BoxColor1 {
+        border-color: #3ac47d;
+        color: #3ac47d;
+    }
+
+    .BoxColor2 {
+        border-color: #3f6ad8;
+        color: #3f6ad8;
+    }
+
+    .BoxColor3 {
+        border-color: #f7b924;
+        color: #f7b924;
+    }
+
+    .BoxColor4 {
+        border-color: #d92550;
+        color: #d92550;
+    }
+
+    .BoxColor5 {
+        border-color: #16aaff;
+        color: #16aaff;
+    }
+
+    .BoxColor6 {
+        border-color: #f3bde8;
+        color: #f3bde8;
+    }
+
+    .BoxColor7 {
+        border-color: #95c83d;
+        color: #95c83d;
+    }
+
+    .BoxColor8 {
+        border-color: #194175;
+        color: #194175;
+    }
+
+    .ShadowForBox {
+        /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+        box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
+    }
+
+    .widget-subheading {
+        font-size: 20px;
+    }
+</style>
+<div class="app-main__inner">
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+
+                <div>
+                    Shadi Mubarak Dashboard
+                    <div class="page-title-subheading">
+                        A Dashboard for management of Shadi Mubarak Application.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tabs-animation">
+        <div class="mb-3 card">
+            <div class="no-gutters row collapse show" id="StageI" style="">
+                <div class="col-sm-6 col-md-4 col-xl-4">
+                    <div class="card no-shadow rm-border bg-transparent widget-chart text-left">
+                        <a id="hr-module-employee-anchor" target="_blank" href="@Url.Action("Index", "Home")">
+                            <div class="icon-wrapper rounded-circle">
+                                <div class="icon-wrapper-bg opacity-10 bg-warning"></div>
+
+                                <i class="lnr-laptop-phone text-dark opacity-8"></i>
+
+                            </div>
+                        </a>
+                        <div class="widget-chart-content">
+                            <div class="widget-subheading">Total Vendors</div>
+                            @if (ViewBag.TotalVendors != null)
+                            {
+                                <div class="widget-numbers text-warning">@ViewBag.TotalVendors </div>
+                            }
+                            @*<div class="widget-description opacity-8 text-focus">
+                        <div class="d-inline text-danger pr-1">
+                            <i class="fa fa-angle-down"></i>
+                            <span class="pl-1">54.1%</span>
+                        </div>
+                        less earnings
+                    </div>*@
+                        </div>
+                    </div>
+                    <div class="divider m-0 d-md-none d-sm-block"></div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-xl-4">
+                    <div class="card no-shadow rm-border bg-transparent widget-chart text-left">
+                        <a id="hr-module-employee-anchor" target="_blank" href="@Url.Action("Index", "Customer")">
+                            <div class="icon-wrapper rounded-circle">
+                                <div class="icon-wrapper-bg opacity-9 bg-danger"></div>
+                                <i class="lnr-graduation-hat text-white"></i>
+                            </div>
+                        </a>
+                        <div class="widget-chart-content">
+                            <div class="widget-subheading">Customers</div>
+                            @if (ViewBag.Customers != null)
+                            {
+                                <div class="widget-numbers text-danger"><span>@ViewBag.Customers </span></div>
+
+                            }
+                        </div>
+                    </div>
+                    <div class="divider m-0 d-md-none d-sm-block"></div>
+                </div>
+                <div class="col-sm-12 col-md-4 col-xl-4">
+                    <div class="card no-shadow rm-border bg-transparent widget-chart text-left">
+                        <a id="hr-module-employee-anchor" target="_blank" href="@Url.Action("Index", "Vendor")">
+                            <div class="icon-wrapper rounded-circle">
+                                <div class="icon-wrapper-bg opacity-9 bg-success"></div>
+                                <i class="lnr-apartment text-white"></i>
+                            </div>
+                        </a>
+                        <div class="widget-chart-content">
+                            <div class="widget-subheading">Vendors</div>
+                            @if (ViewBag.ApprovedVendors != null)
+                            {
+                                <div class="widget-numbers text-success"><span>@ViewBag.ApprovedVendors </span></div>
+                            }
+                            <div class="widget-description opacity-8 text-focus">
+                                <div class="badge badge-success ml-2">Approved</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-4 col-xl-4">
+                    <div class="card no-shadow rm-border bg-transparent widget-chart text-left">
+                        <a id="hr-module-employee-anchor" target="_blank" href="@Url.Action("Index", "Vendor")">
+                            <div class="icon-wrapper rounded-circle">
+                                <div class="icon-wrapper-bg opacity-9 bg-primary"></div>
+                                <i class="lnr-apartment text-white"></i>
+                            </div>
+                        </a>
+                        <div class="widget-chart-content">
+                            <div class="widget-subheading">Photographers</div>
+                            @if (ViewBag.PhotographerVendors != null)
+                            {
+                                <div class="widget-numbers text-primary"><span>@ViewBag.PhotographerVendors</span></div>
+                            }
+                            <div class="widget-description opacity-8 text-focus">
+                                <div class="badge badge-info ml-2">Pending</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-4 col-xl-4">
+                    <div class="card no-shadow rm-border bg-transparent widget-chart text-left">
+                        <a id="hr-module-employee-anchor" target="_blank" href="@Url.Action("Index", "Vendor")">
+                            <div class="icon-wrapper rounded-circle">
+                                <div class="icon-wrapper-bg opacity-9 bg-info"></div>
+                                <i class="lnr-apartment text-white"></i>
+                            </div>
+                        </a>
+                        <div class="widget-chart-content">
+                            <div class="widget-subheading">Venues</div>
+                            @if (ViewBag.VenuesVendors != null)
+                            {
+                                <div class="widget-numbers text-info"><span>@ViewBag.VenuesVendors</span></div>
+                            }
+                            <div class="widget-description opacity-8 text-focus">
+                                <div class="badge badge-primary ml-2">Approved</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-4 col-xl-4">
+                    <div class="card no-shadow rm-border bg-transparent widget-chart text-left">
+                        <a id="hr-module-employee-anchor" target="_blank" href="@Url.Action("Index", "Vendor")">
+                            <div class="icon-wrapper rounded-circle">
+                                <div class="icon-wrapper-bg opacity-9 bg-primary"></div>
+                                <i class="lnr-apartment text-white"></i>
+                            </div>
+                        </a>
+                        <div class="widget-chart-content">
+                            <div class="widget-subheading">Decorators</div>
+                            @if (ViewBag.DecoratorVendors != null)
+                            {
+                                <div class="widget-numbers text-primary"><span>@ViewBag.DecoratorVendors</span></div>
+                            }
+                            <div class="widget-description opacity-8 text-focus">
+                                <div class="badge badge-info ml-2">Pending</div>
+                            </div>
+                        </div>
+                    </div>
+                </div><div class="col-sm-12 col-md-4 col-xl-4">
+                    <div class="card no-shadow rm-border bg-transparent widget-chart text-left">
+                        <a id="hr-module-employee-anchor" target="_blank" href="@Url.Action("Index", "Vendor")">
+                            <div class="icon-wrapper rounded-circle">
+                                <div class="icon-wrapper-bg opacity-9 bg-primary"></div>
+                                <i class="lnr-apartment text-white"></i>
+                            </div>
+                        </a>
+                        <div class="widget-chart-content">
+                            <div class="widget-subheading">Caterers</div>
+                            @if (ViewBag.CaterorsVendors != null)
+                            {
+                                <div class="widget-numbers text-primary"><span>@ViewBag.CaterorsVendors</span></div>
+                            }
+                            <div class="widget-description opacity-8 text-focus">
+                                <div class="badge badge-info ml-2">Pending</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-4 col-xl-4">
+                    <div class="card no-shadow rm-border bg-transparent widget-chart text-left">
+                        <a id="hr-module-employee-anchor" target="_blank" href="@Url.Action("Index", "Vendor")">
+                            <div class="icon-wrapper rounded-circle">
+                                <div class="icon-wrapper-bg opacity-9 bg-primary"></div>
+                                <i class="lnr-apartment text-white"></i>
+                            </div>
+                        </a>
+                        <div class="widget-chart-content">
+                            <div class="widget-subheading">MakeUp Saloons</div>
+                            @if (ViewBag.MakeupVendors != null)
+                            {
+                                <div class="widget-numbers text-primary"><span>@ViewBag.MakeupVendors</span></div>
+                            }
+                            <div class="widget-description opacity-8 text-focus">
+                                <div class="badge badge-info ml-2">Pending</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-4 col-xl-4">
+                    <div class="card no-shadow rm-border bg-transparent widget-chart text-left">
+                        <a id="hr-module-employee-anchor" target="_blank" href="@Url.Action("Index", "Vendor")">
+                            <div class="icon-wrapper rounded-circle">
+                                <div class="icon-wrapper-bg opacity-9 bg-primary"></div>
+                                <i class="lnr-apartment text-white"></i>
+                            </div>
+                        </a>
+                        <div class="widget-chart-content">
+                            <div class="widget-subheading">Mehndi</div>
+                            @if (ViewBag.MehndiVendors != null)
+                            {
+                                <div class="widget-numbers text-primary"><span>@ViewBag.MehndiVendors</span></div>
+                            }
+                            <div class="widget-description opacity-8 text-focus">
+                                <div class="badge badge-info ml-2">Pending</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-4 col-xl-4">
+                    <div class="card no-shadow rm-border bg-transparent widget-chart text-left">
+                        <a id="hr-module-employee-anchor" target="_blank" href="@Url.Action("Index", "Vendor")">
+                            <div class="icon-wrapper rounded-circle">
+                                <div class="icon-wrapper-bg opacity-9 bg-primary"></div>
+                                <i class="lnr-apartment text-white"></i>
+                            </div>
+                        </a>
+                        <div class="widget-chart-content">
+                            <div class="widget-subheading">Event Organizers</div>
+                            @if (ViewBag.EventOrganizers != null)
+                            {
+                                <div class="widget-numbers text-primary"><span>@ViewBag.EventOrganizers</span></div>
+                            }
+                            <div class="widget-description opacity-8 text-focus">
+                                <div class="badge badge-info ml-2">Pending</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>    </div>
+</div>

@@ -1,0 +1,419 @@
+﻿@model ShadiMubarak.Models.Vendor
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+    var infoTab = ViewBag.InfoTab != null && ViewBag.InfoTab ? "active show" : string.Empty;
+    var productTab = ViewBag.vendorTab != null && ViewBag.vendorTab ? "active show" : string.Empty;
+    var dealTab = ViewBag.dealTab != null && ViewBag.dealTab ? "active show" : string.Empty;
+    var budgetaryTab = ViewBag.budgetaryTab != null && ViewBag.budgetaryTab ? "active show" : string.Empty;
+    var responseTab = ViewBag.responseTab != null && ViewBag.responseTab ? "active show" : string.Empty;
+}
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            $('.address').val('@Model.address');
+            $('.title').val('@Model.title');
+            $('.category').val('@Model.category');
+            $('.city').val('@Model.city');
+            $('.contact').val('@Model.contact');
+            $('.email_address').val('@Model.email');
+            $('.country').val('@Model.country');
+            $('.name').val('@Model.name');
+            $('.postal_code').val('@Model.postal_code');
+            $('.subEndDate').val('@Model.subEndDate');
+            $('.subStartDate').val('@Model.subStartDate');
+            $('.PRemail').val('@Model.email')
+            $('.vendorId').val('@Model.resId');
+            $('.isRecommended').val('@Model.isRecommended');
+
+        });
+
+
+    function EditVendor() {
+
+        var name = $('.name').val();
+        var email_address = $('.email_address').val();
+        var subEndDate = $('.subEndDate').val();
+        var subStartDate = $('.subStartDate').val();
+        var preventBind = false;
+        if (name == "" || name == null) {
+            $(".EditVendorForm").submit(function (e) {
+                e.preventDefault();
+                preventBind = true;
+            });
+            return toastr.error('Vendor name is required!');
+        }
+        if (email_address == "" || email_address == null) {
+            $(".EditVendorForm").submit(function (e) {
+                e.preventDefault();
+                preventBind = true;
+            });
+            return toastr.error('Email is required!');
+        }
+        if (subStartDate == "" || subStartDate == null) {
+            $(".EditVendorForm").submit(function (e) {
+                e.preventDefault();
+                preventBind = true;
+            });
+            return toastr.error('Sub Start Date is required!');
+        }
+        if (subEndDate == "" || subEndDate == null) {
+            $(".EditVendorForm").submit(function (e) {
+                e.preventDefault();
+                preventBind = true;
+            });
+            return toastr.error('Sub End Date is required!');
+        }
+        if (preventBind == false) {
+            $(".EditVendorForm").unbind('submit').submit();
+        }
+        return toastr.success("Vendor updated successfully.");
+    }
+
+
+    </script>
+<div class="app-main__inner">
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+
+                <h2>
+                    Vendor - @Model.name
+                </h2>
+            </div>
+        </div>
+        <div class="page-title-subheading opacity-10">
+            <nav class="" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a>
+                            <i aria-hidden="true" class="fa fa-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Vendor")">Vendor List</a>
+                    </li>
+                    <li class="active breadcrumb-item" aria-current="page">
+                        <a href="@Url.Action("Detail", "Vendor", new { vendorId = Model.resId })">Vendor Details</a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div>
+        <div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="main-card mb-3 card">
+                        <div class="card-body">
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item">
+                                    <a role="tab" class="nav-link Detail_tabs active" id="tab-0" data-toggle="tab" href="#tab-content-0">
+                                        <span>Info</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <div class="tab-content">
+                            <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+                                <div class="card-body" style="padding-top: 0px;">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div>
+                                                <div class="row">
+                                                    <div class="col d-flex">
+                                                        <p style="font-weight: bold;">Name:</p>
+                                                        <p>
+                                                            @Model.name
+                                                        </p>
+                                                    </div>
+                                                    <div class="col d-flex">
+                                                        <p style="font-weight: bold;">Category:</p>
+                                                        <p>
+                                                            @Model.category
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col d-flex">
+                                                        <p style="font-weight: bold;">Address:</p>
+                                                        <p>
+                                                            @Model.address
+                                                        </p>
+                                                    </div>
+                                                    <div class="col d-flex">
+                                                        <p style="font-weight: bold;">Contact:</p>
+                                                        <p>
+                                                            @Model.contact
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col d-flex">
+                                                        <p style="font-weight: bold;">City:</p>
+                                                        <p>
+                                                            @Model.city
+                                                        </p>
+                                                    </div>
+                                                    <div class="col d-flex">
+                                                        <p style="font-weight: bold;">Price (Rs.):</p>
+                                                        <p>
+                                                            @Model.price
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col d-flex">
+                                                        <p style="font-weight: bold;">Postal Code:</p>
+                                                        <p>
+                                                            @Model.postal_code
+                                                        </p>
+                                                    </div>
+                                                    <div class="col d-flex">
+                                                        <p style="font-weight: bold;">Country:</p>
+                                                        <p>
+                                                            @Model.country
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col d-flex">
+                                                        <p style="font-weight: bold;">Email:</p>
+                                                        <p>
+                                                            @Model.email
+                                                        </p>
+                                                    </div>
+                                                    <div class="col d-flex">
+                                                        <p style="font-weight: bold;">Website:</p>
+                                                        <p>
+                                                            ---
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col d-flex">
+                                                        <p style="font-weight: bold;">Vendor Badge: </p>
+                                                        <p>
+                                                            @Model.isRecommended
+                                                        </p>
+                                                    </div>
+                                                    <div class="col d-flex">
+                                                        <p style="font-weight: bold;">Average Rating: </p>
+                                                        <p>
+                                                            @Model.avg
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col d-flex">
+                                                        <p style="font-weight: bold;">Sub StartDate:</p>
+                                                        <p>
+                                                            @Model.subStartDate
+                                                        </p>
+                                                    </div>
+                                                    <div class="col d-flex">
+                                                        <p style="font-weight: bold;">Sub EndDate:</p>
+                                                        <p>
+                                                            @Model.subEndDate
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col d-flex">
+                                                        <button role="tab" data-toggle="modal" href="#PaymentReminderModal" class="nav-link mb-2 mr-2 btn-icon btn-pill btn btn-outline-primary">Send Payment Reminder</button>
+                                                    </div>
+                                                    <div class="col d-flex">
+                                                        <button role="tab" data-toggle="modal" href="#ModifyVendorModal" class="nav-link mb-2 mr-2 btn-icon btn-pill btn btn-outline-primary">Modify</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="ModifyVendorModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div style="max-width:70%" class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Vendor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12">
+                        <div class="main-card mb-3 card">
+                            <div class="card-body">
+                                <form class="EditVendorForm" action="/Vendor/Edit" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" class="vendorId" value="" name="resId" />
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-wizard-content">
+                                                <div id="step-1">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <div class="position-relative row form-group">
+                                                                    <label for="exampleAddress" class="col-sm-12 col-form-label">Vendor's Company</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input name="name" placeholder="Enter Name" type="text" class="form-control name">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="position-relative row form-group">
+                                                                    <label for="exampleAddress" class="col-sm-12 col-form-label">Email</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input name="email" placeholder="Enter Email" readonly type="text" class="form-control email_address">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <div class="position-relative row form-group">
+                                                                    <label for="exampleAddress" class="col-sm-12 col-form-label">Title</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input name="title" placeholder="Enter Title" type="text" class="form-control title">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="position-relative row form-group">
+                                                                    <label for="exampleAddress" class="col-sm-12 col-form-label">Category</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input name="category" placeholder="Enter Category" type="text" class="category form-control">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <div class="position-relative row form-group">
+                                                                    <label for="exampleAddress" class="col-sm-12 col-form-label">City</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input name="city" placeholder="Enter City" type="text" class="city form-control">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="position-relative row form-group">
+                                                                    <label for="exampleAddress" class="col-sm-12 col-form-label">Address</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input name="address" placeholder="Enter Address" type="text" class="address form-control">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <div class="position-relative row form-group">
+                                                                    <label for="exampleAddress" class="col-sm-12 col-form-label">Postal code</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input name="postal_code" placeholder="Enter postal_code" type="text" class=" postal_code form-control">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="position-relative row form-group">
+                                                                    <label for="exampleAddress" class="col-sm-12 col-form-label">Country</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input name="country" placeholder="Enter country" type="text" class="country form-control">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <div class="position-relative row form-group">
+                                                                    <label for="exampleAddress" class="col-sm-12 col-form-label">Phone</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input name="contact" placeholder="Enter Phone" type="text" class="contact form-control">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="position-relative row form-group">
+                                                                    <label for="exampleAddress" class="col-sm-12 col-form-label">Vendor Badge</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input name="isRecommended" placeholder="Add Badge" type="text" class="isRecommended form-control">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <div class="position-relative row form-group">
+                                                                    <label for="exampleAddress" class="col-sm-12 col-form-label">Sub Start Date</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input name="subStartDate" placeholder="Enter subStartDate" type="date" class="subStartDate form-control">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="position-relative row form-group">
+                                                                    <label for="exampleAddress" class="col-sm-12 col-form-label">Sub End Date</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input name="subEndDate" placeholder="Enter Sub End Date" type="date" class="subEndDate form-control">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="step-2">
+                                                        <div class="no-results">
+                                                            <div class="text-center">
+                                                                <button data-type="success" onclick="EditVendor()" class="btn-shadow btn-wide btn btn-success btn-lg">Finish</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="PaymentReminderModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Send Payment Reminder</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="" action="@Url.Action("SendPaymentReminderEmail", "Vendor")" method="post" enctype="multipart/form-data">
+                    <input type="hidden" class="PRemail" value="" name="email" />
+
+                    <div style="margin-top:10px; text-align:center;">
+                        <div class="results-title" style="margin-bottom:5px;">Do You want to send payment reminder email to the Vendor?</div>
+                        <button type="submit" class="btn btn-primary">Send Email</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#ModifyVendorModal').appendTo('body');
+    $('#PaymentReminderModal').appendTo('body');
+</script>

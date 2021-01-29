@@ -1,0 +1,469 @@
+﻿@model IEnumerable<ShadiMubarak.Models.Vendor>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+        });
+
+        function SetVendorId(vendorId) {
+            $('.vendorId').val(vendorId);
+        }
+
+        function SetDeleteUserId(id) {
+            $(".user_id").val(id);
+        }
+
+        function AddVendor() {
+
+            var name = $('.name').val();
+            var email_address = $('.email_address').val();
+            var subEndDate = $('.subEndDate').val();
+            var subStartDate = $('.subStartDate').val();
+            var preventBind = false;
+            if (name == "" || name == null) {
+                $(".AddVendorForm").submit(function (e) {
+                    e.preventDefault();
+                    preventBind = true;
+                });
+                return toastr.error('Vendor name is required!');
+            }
+            if (email_address == "" || email_address == null) {
+                $(".AddVendorForm").submit(function (e) {
+                    e.preventDefault();
+                    preventBind = true;
+                });
+                return toastr.error('Email is required!');
+            }
+            if (subStartDate == "" || subStartDate == null) {
+                $(".AddVendorForm").submit(function (e) {
+                    e.preventDefault();
+                    preventBind = true;
+                });
+                return toastr.error('Sub Start Date is required!');
+            }
+            if (subEndDate == "" || subEndDate == null) {
+                $(".AddVendorForm").submit(function (e) {
+                    e.preventDefault();
+                    preventBind = true;
+                });
+                return toastr.error('Sub End Date is required!');
+            }
+            if (preventBind == false) {
+                $(".AddVendorForm").unbind('submit').submit();
+            }
+            return toastr.success("Vendor added successfully.");
+        }
+
+
+    </script>
+}
+<div class="app-main__inner">
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+
+                <div>
+                    Vendor
+                    <div class="page-title-subheading">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-title-subheading opacity-10">
+            <nav class="" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a>
+                            <i aria-hidden="true" class="fa fa-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Vendor")">Vendor List</a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="main-card mb-3 card">
+        <div class="card-body">
+            <div class="">
+                <div class="">
+                    <div class="">
+                        <ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
+                            <li class="nav-item">
+                                <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-0">
+                                    <span>Vendor List</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="main-card mb-3 card">
+                                            <div class="card-body">
+                                                <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Name</th>
+                                                            <th>Category</th>
+                                                            <th>Email</th>
+                                                            <th>Phone</th>
+                                                            <th>City</th>
+                                                            <th>Subscription Starting Date</th>
+                                                            <th>Subscription Ending Date</th>
+                                                            <th>Payment Status</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                        @foreach (var item in Model)
+                                                        {
+                                                            <tr>
+                                                                <td> @item.name</td>
+                                                                <td>@item.category</td>
+                                                                <td>@item.email</td>
+                                                                <td>@item.contact</td>
+                                                                <td>@item.city</td>
+                                                                @if (item.subStartDate != null)
+                                                                {
+                                                                    <td>@item.subStartDate</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>---</td>
+                                                                }
+                                                                @if (item.subEndDate != null)
+                                                                {
+                                                                    <td>@item.subEndDate</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>---</td>
+                                                                }
+                                                                @if (item.hasPaid)
+                                                                {
+                                                            <td>
+                                                                Paid
+                                                                <button onclick="SetDeleteUserId('@item.resId')" data-toggle="modal" data-target="#UnpaidPaymentUserModel" class="mb-2 mr-2 btn-icon btn-pill btn btn-outline-primary">UnPaid</button>
+                                                            </td>
+                                                                }
+                                                                else
+                                                                {
+                                                            <td>
+                                                                Pending
+                                                                <button onclick="SetDeleteUserId('@item.resId')" data-toggle="modal" data-target="#PaidPaymentUserModel" class="mb-2 mr-2 btn-icon btn-pill btn btn-outline-primary">Paid</button>
+                                                            </td>
+                                                                }
+                                                                <td>
+                                                                    <button data-toggle="modal" onclick="SetVendorId('@item.resId')" data-target="#DeletCustomerModal" class="mb-2 mr-2 btn-icon btn-pill btn btn-outline-warning"><i class="pe-7s-trash btn-icon-wrapper"> </i></button>
+                                                                    <button onclick="window.location.href='@Url.Action("Details", "Vendor", new { id = item.resId })'" class="mb-2 mr-2 btn-icon btn-pill btn btn-outline-primary">Detail</button>
+                                                                    @if (!item.isApproved)
+                                                                    {
+                                                                        <button onclick="SetDeleteUserId('@item.resId')" data-toggle="modal" data-target="#ActivateUserModel" class="mb-2 mr-2 btn-icon btn-pill btn btn-outline-primary">Activate</button>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <button onclick="SetDeleteUserId('@item.resId')" data-toggle="modal" data-target="#DeactivateUserModel" class="mb-2 mr-2 btn-icon btn-pill btn btn-outline-primary">Deactivate</button>
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                        }
+
+                                                    </tbody>
+                                                    @*<tbody>
+                                                            @foreach (var item in Model)
+                                                            {
+                                                                <tr>
+                                                                    <td>@item.name</td>
+                                                                    <td>@item.Abbreviation</td>
+                                                                    <td>@item.country</td>
+                                                                    <td>@item.city</td>
+                                                                    <td>
+                                                                        <button onclick="SetCustomerId('@item.id')" data-toggle="modal" data-target="#DeletCustomerModal" class="mb-2 mr-2 btn-icon btn-pill btn btn-outline-warning"><i class="pe-7s-trash btn-icon-wrapper"> </i></button>
+                                                                        @if (ViewBag.IsAdmin || (ViewBag.userPermissions != null && ViewBag.userPermissions.Contains("Customer_View")))
+                                                                        {
+                                                                            <button onclick="window.location.href='@Url.Action("Detail", "Customer", new { customerId = item.id })'" class="mb-2 mr-2 btn-icon btn-pill btn btn-outline-primary">Detail</button>
+                                                                        }
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>*@
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane tabs-animation fade" id="tab-content-1" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="mb-3 card">
+                                            <div class="card-body">
+                                                <div>
+                                                    <div class="form-wizard-content">
+                                                        <form class="AddVendorForm" action="/Vendor/Create" method="post" enctype="multipart/form-data">
+                                                            <div id="step-1">
+                                                                <div class="card-body">
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <div class="position-relative row form-group">
+                                                                                <label for="exampleAddress" class="col-sm-12 col-form-label">Vendor's Company</label>
+                                                                                <div class="col-sm-10">
+                                                                                    <input name="name" placeholder="Enter Name" type="text" class="form-control name">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <div class="position-relative row form-group">
+                                                                                <label for="exampleAddress" class="col-sm-12 col-form-label">Email</label>
+                                                                                <div class="col-sm-10">
+                                                                                    <input name="email_address" placeholder="Enter Email" type="text" class="form-control email_address">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <div class="position-relative row form-group">
+                                                                                <label for="exampleAddress" class="col-sm-12 col-form-label">Title</label>
+                                                                                <div class="col-sm-10">
+                                                                                    <input name="title" placeholder="Enter Title" type="text" class="form-control name">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <div class="position-relative row form-group">
+                                                                                <label for="exampleAddress" class="col-sm-12 col-form-label">Category</label>
+                                                                                <div class="col-sm-10">
+                                                                                    <input name="category" placeholder="Enter Category" type="text" class="form-control category">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <div class="position-relative row form-group">
+                                                                                <label for="exampleAddress" class="col-sm-12 col-form-label">Address</label>
+                                                                                <div class="col-sm-10">
+                                                                                    <input name="address" placeholder="Enter Address" type="text" class="form-control">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <div class="position-relative row form-group">
+                                                                                <label for="exampleAddress" class="col-sm-12 col-form-label">City</label>
+                                                                                <div class="col-sm-10">
+                                                                                    <input name="city" placeholder="Enter City" type="text" class="form-control">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <div class="position-relative row form-group">
+                                                                                <label for="exampleAddress" class="col-sm-12 col-form-label">Postal code</label>
+                                                                                <div class="col-sm-10">
+                                                                                    <input name="postal_code" placeholder="Enter postal_code" type="text" class="form-control">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <div class="position-relative row form-group">
+                                                                                <label for="exampleAddress" class="col-sm-12 col-form-label">Country</label>
+                                                                                <div class="col-sm-10">
+                                                                                    <input name="country" placeholder="Enter country" type="text" class="form-control">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <div class="position-relative row form-group">
+                                                                                <label for="exampleAddress" class="col-sm-12 col-form-label">Phone</label>
+                                                                                <div class="col-sm-10">
+                                                                                    <input name="contact" placeholder="Enter Phone" type="number" class="form-control">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <div class="position-relative row form-group">
+                                                                                <label for="exampleAddress" class="col-sm-12 col-form-label">Sub Start Date</label>
+                                                                                <div class="col-sm-10">
+                                                                                    <input name="subStartDate" placeholder="Enter subStartDate" type="date" class="form-control subStartDate">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <div class="position-relative row form-group">
+                                                                                <label for="exampleAddress" class="col-sm-12 col-form-label">Sub End Date</label>
+                                                                                <div class="col-sm-10">
+                                                                                    <input name="subEndDate" placeholder="Enter Sub End Date" type="date" class="form-control subEndDate">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div id="step-2">
+                                                                <div class="no-results">
+                                                                    <div class="text-center">
+                                                                        <button data-type="success" onclick="AddVendor()" class="btn-shadow btn-wide btn btn-success btn-lg">Finish</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Delete Customer pop up*@
+<div class="modal fade" id="DeletCustomerModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Vendor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/Vendor/Delete" method="post">
+                    <input style="display:none;" type="hidden" class="vendorId" name="id" value="" />
+                    <div style="margin-top:10px; text-align:center;">
+                        <div class="results-title" style="margin-bottom:5px;">Do You want to delete this Record?</div>
+                        <button type="submit" class="btn btn-primary">Confirm Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ActivateUserModel" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Activate Vendor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="" action="@Url.Action("ActivateUser", "Vendor")" method="post" enctype="multipart/form-data">
+                    <input type="hidden" class="user_id" value="" name="user_id" />
+                    <div class="position-relative row form-group">
+                        <label for="exampleAddress" class="col-sm-8 col-form-label">Sub Start Date:</label>
+                        <div class="col-sm-10">
+                            <input name="subStartDate" placeholder="Enter subscription Start Date" type="date" class="form-control">
+                        </div>
+                    </div>
+                    <div class="position-relative row form-group">
+                        <label for="exampleAddress" class="col-sm-8 col-form-label">Sub End Date:</label>
+                        <div class="col-sm-10">
+                            <input name="subEndDate" placeholder="Enter subscription End Date" type="date" class="form-control subStartDate">
+                        </div>
+                    </div>
+                    <div style="margin-top:10px; text-align:center;">
+                        <div class="results-title" style="margin-bottom:5px;">Do You want to Activate the Vendor?</div>
+                        <button type="submit" class="btn btn-primary">Activate</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="UnpaidPaymentUserModel" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Payment Status</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="" action="@Url.Action("UnpaidPaymentUserModel", "Vendor")" method="post" enctype="multipart/form-data">
+                    <input type="hidden" class="user_id" value="" name="user_id" />
+                    <div style="margin-top:10px; text-align:center;">
+                        <div class="results-title" style="margin-bottom:5px;">Do You want to Update the Vendor's Payment Status?</div>
+                        <button type="submit" class="btn btn-primary">Update To Unpaid</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="PaidPaymentUserModel" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Payment Status</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="" action="@Url.Action("PaidPaymentUserModel", "Vendor")" method="post" enctype="multipart/form-data">
+                    <input type="hidden" class="user_id" value="" name="user_id" />
+                    <div style="margin-top:10px; text-align:center;">
+                        <div class="results-title" style="margin-bottom:5px;">Do You want to Update the Vendor's Payment Status?</div>
+                        <button type="submit" class="btn btn-primary">Update To Paid</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="DeactivateUserModel" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Deactivate Vendor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="" action="@Url.Action("DeactivateUser", "Vendor")" method="post" enctype="multipart/form-data">
+                    <input type="hidden" class="user_id" value="" name="user_id" />
+
+                    <div style="margin-top:10px; text-align:center;">
+                        <div class="results-title" style="margin-bottom:5px;">Do You want to Deactivate the Vendor?</div>
+                        <button type="submit" class="btn btn-primary">Deactivate</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#DeletCustomerModal').appendTo('body');
+    $('#DeactivateUserModel').appendTo('body');
+    $('#ActivateUserModel').appendTo('body');
+    $('#UnpaidPaymentUserModel').appendTo('body');
+    $('#PaidPaymentUserModel').appendTo('body');
+</script>

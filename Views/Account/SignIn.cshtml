@@ -1,0 +1,105 @@
+﻿@model ShadiMubarak.Models.Admin
+@{
+    ViewBag.Title = "SignIn";
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+
+<script type="text/javascript">
+
+    function SignIn() {
+
+        var email = $('.email').val();
+        var password = $('.password').val();
+        var preventBind = false;
+        if (email == "" || email == null) {
+            $(".SignInForm").submit(function (e) {
+                e.preventDefault();
+                preventBind = true;
+            });
+            return toastr.error('Kindly Enter Email!');
+        }
+        if (password == "" || password == null) {
+            $(".SignInForm").submit(function (e) {
+                e.preventDefault();
+                preventBind = true;
+            });
+            return toastr.error('Kindly Enter Password!');
+        }
+        $.ajax({
+            type: "POST",
+            url: "/Account/SignIn",
+            data: { email: email, password: password },
+            success: function (data) {
+                $('.EmplyeeClaimDesignation').val(data.designation);
+                return toastr.success("Vendor updated successfully.");
+            },
+            error: function (e, f, g) {
+                console.log(e, f, g);
+            }
+        });
+        if (preventBind == false) {
+            $(".SignInForm").unbind('submit').submit();
+        }
+        return toastr.success("Vendor updated successfully.");
+    }
+</script>
+<div class="app-container app-theme-white body-tabs-shadow">
+    <div class="app-container">
+        <div class="h-100">
+            <div class="h-100 no-gutters row">
+                <div class="d-none d-lg-block col-lg-4">
+                            <div>
+                                <div class="position-relative h-100 d-flex justify-content-center align-items-center bg-plum-plate" tabindex="-1">
+                                    <div>
+                                        <img src="~/images/shadimubarak_logo.png" />
+                                    </div>
+                                </div>
+                            </div>
+                </div>
+                <div class="h-100 d-flex bg-white justify-content-center align-items-center col-md-12 col-lg-8">
+
+                    <div class="mx-auto app-login-box col-sm-12 col-md-10 col-lg-9">
+                        <h4 class="mb-0">
+                            <span>Please sign in to your account.</span>
+                        </h4>
+                        <div class="divider row"></div>
+                        <div>
+                            @using (Html.BeginForm("LogIn", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <p class="text-danger">@ViewBag.error</p>
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <div class="position-relative form-group">
+                                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
+                                            @Html.ValidationMessageFor(m => m.Email, "", new { @style = "color:red" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="position-relative form-group">
+                                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
+                                            @Html.ValidationMessageFor(m => m.Password, "", new { @style = "color:red" })
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex flex-wrap col-md-12">
+                                        <div class="position-relative form-check">
+                                            <input name="check" id="exampleCheck" type="checkbox" class="form-check-input">
+                                            <label for="exampleCheck" class="form-check-label">Keep me logged in</label>
+                                        </div>
+                                        <div class="d-flex ml-auto align-items-center">
+                                            <div class="ml-auto">
+                                                <a href="/Account/ForgotPassword" class="btn-lg btn">Forgot Password</a>
+                                                <button class="btn btn-primary btn-lg">Login to Dashboard</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

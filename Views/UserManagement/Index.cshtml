@@ -1,0 +1,431 @@
+﻿@model IList<ShadiMubarak.Models.Admin>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+@section RenderInHead
+{
+    <style>
+        .dt-buttons {
+            margin-right: 8px;
+        }
+    </style>
+}
+
+<script>
+    $(document).ready(function () {
+        $('#example5').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdfHtml5'
+            ]
+        });
+    });
+
+    function SetDeleteUserId(id) {
+        $(".user_id").val(id)
+    }
+
+    function isSaveSuccessfully() {
+        var first_name = $('.first_name').val();
+        var last_name = $('.last_name').val();
+        var user_name = $('.add_user_name').val();
+        var password = $('.addpassword').val();
+        var confirm_password = $('.confirm_password').val();
+        var phone_number = $('.phone_number').val();
+
+        if ((first_name == "" || first_name == null)
+            || (last_name == "" || last_name == null)
+            || (user_name == "" || user_name == null)
+            || (password == "" || password == null)
+            || (confirm_password == "" || confirm_password == null)
+            || (phone_number == "" || phone_number == null)) {
+            document.addEventListener('invalid', (function () {
+                return function (e) {
+                    e.preventDefault();
+                };
+            })(), true);
+            if (first_name == "" || first_name == null)
+                return toastr.error("First Name is required!");
+            if (last_name == "" || last_name == null)
+                return toastr.error("Last Name is required!");
+            if (user_name == "" || user_name == null)
+                return toastr.error("UserName is required!");
+            if (password == "" || password == null)
+                return toastr.error("Password is required!");
+            if (confirm_password == "" || confirm_password == null)
+                return toastr.error("Confirm Password is required!");
+            if (phone_number == "" || phone_number == null)
+                return toastr.error("Phone number is required!");
+        }
+
+        if ((first_name != "" && first_name != null)
+            && (last_name != "" && last_name != null)
+            && (user_name != "" && user_name != null)
+            && (password != "" && password != null)
+            && (confirm_password != "" && confirm_password != null)
+            && (phone_number != "" && phone_number != null)) {
+            if ((!user_name.match(/^([a-zA-Z0-9_\.\-])+\@@(([a-z0-9\-])+\.)+([a-z0-9]{2,4})+$/)) || (password.length < 6) || (confirm_password.length < 6)) {
+                document.addEventListener('invalid', (function () {
+                    return function (e) {
+                        e.preventDefault();
+                    };
+                })(), true);
+                if (!user_name.match(/^([a-zA-Z0-9_\.\-])+\@@(([a-z0-9\-])+\.)+([a-z0-9]{2,4})+$/))
+                    return toastr.error("Please enter correct username");
+                if (password.length < 6)
+                    return toastr.error("Password should be atleast 6 characters long!");
+                if (confirm_password.length < 6)
+                    return toastr.error("Confirm Password should be atleast 6 characters long!");
+            }
+            else {
+                return toastr.success("User added successfully.");
+            }
+        }
+    }
+
+    function isDeleteSuccessfully() {
+        return toastr.success("User deleted successfully.");
+    }
+
+</script>
+<div class="app-main__inner">
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+
+                <div>
+                    User Information
+                    <div class="page-title-subheading">
+                    </div>
+                </div>
+            </div>
+            <div class="page-title-actions">
+                <button type="button" data-toggle="tooltip" title="Example Tooltip" data-placement="bottom" class="btn-shadow mr-3 btn btn-dark">
+                    <i class="fa fa-star"></i>
+                </button>
+                <div class="d-inline-block dropdown">
+                    <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-shadow dropdown-toggle btn btn-info">
+                        <span class="btn-icon-wrapper pr-2 opacity-7">
+                            <i class="fa fa-business-time fa-w-20"></i>
+                        </span>
+                        Tools
+                    </button>
+                    <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link">
+                                    <i class="nav-link-icon lnr-inbox"></i>
+                                    <span>
+                                        Import
+                                    </span>
+                                    <div class="ml-auto badge badge-pill badge-secondary">86</div>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link">
+                                    <i class="nav-link-icon lnr-book"></i>
+                                    <span>
+                                        Export
+                                    </span>
+                                    <div class="ml-auto badge badge-pill badge-danger">5</div>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link">
+                                    <i class="nav-link-icon lnr-picture"></i>
+                                    <span>
+                                        Print
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-title-subheading opacity-10">
+            <nav class="" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a>
+                            <i aria-hidden="true" class="fa fa-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "UserManagement")">User List</a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="main-card mb-3 card">
+        <div class="card-body">
+            <div class="">
+                <div class="">
+                    <div class="">
+                        <ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
+                            <li class="nav-item">
+                                <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-0">
+                                    <span>User Info</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                    <a role="tab" class="nav-link" id="tab-1" data-toggle="tab" href="#tab-content-1">
+                                        <span>Add User</span>
+                                    </a>
+                                </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="main-card mb-3 card">
+                                            <div class="card-body">
+                                                <table style="width: 100%;" id="example5" class="table table-hover table-striped table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>First Name</th>
+                                                            <th>Last Name</th>
+                                                            <th>Email</th>
+                                                            <th>Phone Number</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in Model)
+                                                        {
+                                                            <tr>
+                                                                <td>@item.FirstName</td>
+                                                                <td>@item.LastName</td>
+                                                                <td>@item.Email</td>
+                                                                <td>@item.PhoneNumber</td>
+                                                                <td>
+                                                                    <button onclick="window.location.href='/UserManagement/Edit/@item.Id'" class="mb-2 mr-2 btn-icon btn-pill btn btn-outline-primary"><i class="pe-7s-tools btn-icon-wrapper"> </i></button>
+                                                                    <button onclick="SetDeleteUserId('@item.Id')" data-toggle="modal" data-target="#DeletUserModal" class="mb-2 mr-2 btn-icon btn-pill btn btn-outline-warning"><i class="pe-7s-trash btn-icon-wrapper"> </i></button>
+                                                                    @if (!item.isActivated)
+                                                                    {
+                                                                        <button onclick="SetDeleteUserId('@item.Id')" data-toggle="modal" data-target="#ActivateUserModel" class="mb-2 mr-2 btn-icon btn-pill btn btn-outline-primary">Activate</button>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <button onclick="SetDeleteUserId('@item.Id')" data-toggle="modal" data-target="#DeactivateUserModel" class="mb-2 mr-2 btn-icon btn-pill btn btn-outline-primary">Deactivate</button>
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            @*<div id="chart-demo"> @(Html.DevExtreme().Chart().ID("chart").CommonSeriesSettings(s => s.ArgumentField("Monarch").Type(SeriesType.RangeBar).RangeValue1Field("Start").RangeValue2Field("End").BarOverlapGroup("monarchs")).BarGroupPadding(0.2).Rotated(true).Title(t => t.Text("The British Monarchy").Subtitle("An Abbreviated Timeline")).ArgumentAxis(a => a.Tick(t => t.Visible(false)).Categories(new[] { "Royal Houses" })).Size(s => s.Height(440)).Legend(l => l.Title("Royal Houses").VerticalAlignment(VerticalEdge.Bottom).HorizontalAlignment(HorizontalAlignment.Center)).Animation(a => a.Enabled(false)).SeriesTemplate(s => s.NameField("House")).DataSource(new[] { new { Monarch = "Anne", Start = new DateTime(1701, 5, 1), House = "Stuart", End = new DateTime(1714, 8, 1) }, new { Monarch = "George I", Start = new DateTime(1714, 8, 1), House = "Hanover", End = new DateTime(1727, 6, 11) }, new { Monarch = "George II", Start = new DateTime(1727, 6, 11), House = "Hanover", End = new DateTime(1760, 10, 25) }, new { Monarch = "George III", Start = new DateTime(1760, 10, 25), House = "Hanover", End = new DateTime(1820, 1, 29) }, new { Monarch = "George IV", Start = new DateTime(1820, 1, 29), House = "Hanover", End = new DateTime(1830, 6, 26) }, new { Monarch = "William IV", Start = new DateTime(1830, 6, 26), House = "Hanover", End = new DateTime(1837, 6, 20) }, new { Monarch = "Victoria", Start = new DateTime(1837, 6, 20), House = "Hanover", End = new DateTime(1901, 1, 22) }, new { Monarch = "Edward VII", Start = new DateTime(1901, 1, 22), House = "Saxe-Coburg and Gotha", End = new DateTime(1910, 5, 6) }, new { Monarch = "George V", Start = new DateTime(1910, 5, 6), House = "Saxe-Coburg and Gotha", End = new DateTime(1917, 6, 17) }, new { Monarch = "George V", Start = new DateTime(1917, 6, 17), House = "Windsor", End = new DateTime(1936, 1, 20) }, new { Monarch = "Edward VIII", Start = new DateTime(1936, 1, 20), House = "Windsor", End = new DateTime(1936, 12, 11) }, new { Monarch = "George VI", Start = new DateTime(1936, 12, 11), House = "Windsor", End = new DateTime(1952, 2, 6) }, new { Monarch = "Elizabeth II", Start = new DateTime(1952, 2, 6), House = "Windsor", End = DateTime.Now }, new { Monarch = "Royal Houses", Start = new DateTime(1701, 5, 1), House = "Stuart", End = new DateTime(1714, 8, 1) }, new { Monarch = "Royal Houses", Start = new DateTime(1714, 8, 1), House = "Hanover", End = new DateTime(1901, 1, 22) }, new { Monarch = "Royal Houses", Start = new DateTime(1901, 1, 22), House = "Saxe-Coburg and Gotha", End = new DateTime(1917, 6, 17) }, new { Monarch = "Royal Houses", Start = new DateTime(1917, 6, 17), House = "Windsor", End = DateTime.Now } })) </div>*@
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane tabs-animation fade" id="tab-content-1" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="mb-3 card">
+                                            <div class="card-body">
+
+                                                <form class="" id="addUserForm" action="/Account/Create" method="post" enctype="multipart/form-data">
+                                                    <div>
+                                                        <div class="form-wizard-content">
+                                                            <div id="step-1">
+                                                                <div class="card-body">
+                                                                    @Html.AntiForgeryToken()
+                                                                    @Html.ValidationSummary(true)
+                                                                    <div class="position-relative row form-group">
+                                                                        <label for="exampleAddress" class="col-sm-2 col-form-label">First Name</label>
+                                                                        <div class="col-sm-10">
+                                                                            <input name="firstname" placeholder="Enter First Name" id="Input" required type="text" class="form-control first_name">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <script>
+                                                                        Input.onchange = Input.oninput = restrict;
+                                                                        function restrict() {
+                                                                            Input.value = Input.value.replace(/[^a-z,A-Z ]/g, "");
+                                                                        }
+                                                                    </script>
+                                                                    <div class="position-relative row form-group">
+                                                                        <label for="exampleAddress" class="col-sm-2 col-form-label">Last Name</label>
+                                                                        <div class="col-sm-10">
+                                                                            <input name="lastname" id="Inputlastname" placeholder="Enter Last Name" required type="text" class="form-control last_name">
+                                                                        </div>
+                                                                    </div>
+                                                                    <script>
+                                                                        Inputlastname.onchange = Inputlastname.oninput = restrict;
+                                                                        function restrict() {
+                                                                            Inputlastname.value = Inputlastname.value.replace(/[^a-z,A-Z ]/g, "");
+                                                                        }
+                                                                    </script>
+                                                                    <div class="position-relative row form-group">
+                                                                        <label for="exampleAddress" class="col-sm-2 col-form-label">User Name</label>
+                                                                        <div class="col-sm-10">
+                                                                            <input name="username" placeholder="Enter UserName" id="demoForm" required type="email" class="form-control add_user_name">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <script>
+                                                                        document.addEventListener('DOMContentLoaded', function (e) {
+                                                                            FormValidation.formValidation(
+                                                                                document.getElementById('demoForm'),
+                                                                                {
+                                                                                    fields: {
+                                                                                        email: {
+                                                                                            validators: {
+                                                                                                emailAddress: {
+                                                                                                    message: 'The value is not a valid email address'
+                                                                                                }
+                                                                                            }
+                                                                                        },
+                                                                                    },
+                                                                                    plugins: {
+                                                                                        trigger: new FormValidation.plugins.Trigger(),
+                                                                                        tachyons: new FormValidation.plugins.Tachyons(),
+                                                                                        submitButton: new FormValidation.plugins.SubmitButton(),
+                                                                                        icon: new FormValidation.plugins.Icon({
+                                                                                            valid: 'fa fa-check',
+                                                                                            invalid: 'fa fa-times',
+                                                                                            validating: 'fa fa-refresh'
+                                                                                        }),
+                                                                                    },
+                                                                                }
+                                                                            );
+                                                                        });
+                                                                    </script>
+                                                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.35.3/es6-shim.min.js"></script>
+
+                                                                    <div class="position-relative row form-group">
+                                                                        <label for="exampleAddress" class="col-sm-2 col-form-label">Password</label>
+                                                                        <div class="col-sm-10">
+                                                                            <input name="password" minlength="6" placeholder="Enter Password" required type="password" class="form-control addpassword">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="position-relative row form-group">
+                                                                        <label for="exampleAddress" class="col-sm-2 col-form-label">Confirm Password</label>
+                                                                        <div class="col-sm-10">
+                                                                            <input name="confirmpassword" minlength="6" placeholder="Enter Password" required type="password" class="form-control confirm_password">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="position-relative row form-group">
+                                                                        <label for="exampleAddress" class="col-sm-2 col-form-label">Image</label>
+                                                                        <div class="col-sm-10">
+                                                                            <input name="ImageFile" type="file">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="position-relative row form-group">
+                                                                        <label for="exampleAddress" class="col-sm-2 col-form-label">Phone Number</label>
+                                                                        <div class="col-sm-10">
+                                                                            <input name="phonenumber" placeholder="Enter Phone Number" required type="text" class="form-control phone_number">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div id="step-2">
+                                                                <div class="no-results">
+                                                                    <div class="text-center">
+                                                                        <button onclick="isSaveSuccessfully()" data-type="success" class="btn-shadow btn-wide btn btn-success btn-lg">Finish</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+@*Delete User pop up*@
+<div class="modal fade DeleteUserModal" id="DeletUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/UserManagement/Delete" method="post">
+                    <input style="display:none;" type="hidden" class="user_id" name="id" value="" />
+
+                    <div style="margin-top:10px; text-align:center;">
+                        <div class="results-title" style="margin-bottom:5px;">Do You want to delete this Record?</div>
+                        <button onclick="isDeleteSuccessfully()" id="DeleteUserBtn" type="submit" class="btn btn-primary">Confirm Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ActivateUserModel" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Activate User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="" action="@Url.Action("ActivateUser", "Account")" method="post" enctype="multipart/form-data">
+                    <input type="hidden" class="user_id" value="" name="user_id" />
+
+                    <div style="margin-top:10px; text-align:center;">
+                        <div class="results-title" style="margin-bottom:5px;">Do You want to Activate the User?</div>
+                        <button type="submit" class="btn btn-primary">Activate</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="DeactivateUserModel" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Deactivate User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="" action="@Url.Action("DeactivateUser", "Account")" method="post" enctype="multipart/form-data">
+                    <input type="hidden" class="user_id" value="" name="user_id" />
+
+                    <div style="margin-top:10px; text-align:center;">
+                        <div class="results-title" style="margin-bottom:5px;">Do You want to Deactivate the User?</div>
+                        <button type="submit" class="btn btn-primary">Deactivate</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#DeletUserModal').appendTo('body');
+    $('#ActivateUserModel').appendTo('body');
+    $('#DeactivateUserModel').appendTo('body');
+</script>

@@ -1,0 +1,116 @@
+﻿@model ShadiMubarak.Models.Customer
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+    var infoTab = ViewBag.InfoTab != null && ViewBag.InfoTab ? "active show" : string.Empty;
+    var productTab = ViewBag.vendorTab != null && ViewBag.vendorTab ? "active show" : string.Empty;
+    var dealTab = ViewBag.dealTab != null && ViewBag.dealTab ? "active show" : string.Empty;
+    var budgetaryTab = ViewBag.budgetaryTab != null && ViewBag.budgetaryTab ? "active show" : string.Empty;
+    var responseTab = ViewBag.responseTab != null && ViewBag.responseTab ? "active show" : string.Empty;
+}
+
+<script type="text/javascript">
+    
+</script>
+<div class="app-main__inner">
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+
+                <h2>
+                    Customer - @Model.name
+                </h2>
+            </div>
+        </div>
+        <div class="page-title-subheading opacity-10">
+            <nav class="" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a>
+                            <i aria-hidden="true" class="fa fa-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Customer")">Customer List</a>
+                    </li>
+                    <li class="active breadcrumb-item" aria-current="page">
+                        <a href="@Url.Action("Detail", "Customer", new { customerId = Model.id })">Customer Details</a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div>
+        <div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="main-card mb-3 card">
+                        <div class="card-body">
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item">
+                                    <a role="tab" class="nav-link Detail_tabs active" id="tab-0" data-toggle="tab" href="#tab-content-0">
+                                        <span>Info</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <div class="tab-content">
+                            <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+                                <div class="card-body" style="padding-top: 0px;">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div>
+                                                <div class="row">
+                                                    <div class="col d-flex">
+                                                        <p style="font-weight: bold;">Name:</p>
+                                                        <p>
+                                                            @Model.name
+                                                        </p>
+                                                    </div>
+                                                    <div class="col d-flex">
+                                                        <p style="font-weight: bold;">Email:</p>
+                                                        <p>
+                                                            @Model.email
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col d-flex">
+                                                        <p style="font-weight: bold;">Address:</p>
+                                                        <p>
+                                                            ---
+                                                        </p>
+                                                    </div>
+                                                    <div class="col d-flex">
+                                                        <p style="font-weight: bold;">Contact:</p>
+                                                        <p>
+                                                            @Model.contact
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col d-flex">
+                                                        <p style="font-weight: bold;">City:</p>
+                                                        <p>
+                                                            @Model.city
+                                                        </p>
+                                                    </div>
+                                                    <div class="col d-flex">
+                                                        <p style="font-weight: bold;">Country:</p>
+                                                        <p>
+                                                            @Model.country
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
